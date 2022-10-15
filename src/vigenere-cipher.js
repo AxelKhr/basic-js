@@ -20,13 +20,44 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  constructor(direct = true) {
+    this.isDirect = direct;
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
+  encrypt(message, key) {
+    //throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
+    if ((typeof arguments[0] !== 'string') || (typeof arguments[1] !== 'string')) throw new Error("Incorrect arguments!");
+    const alph = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    let msgArr = message.toUpperCase().split('');
+    let keyArr = key.toUpperCase().split('');
+    let msgOut = [];
+    let keyInd = 0;
+    for (let i = 0; i < msgArr.length; i++) {
+      if (alph.indexOf(msgArr[i]) >= 0) {
+        msgOut.push(alph[(alph.indexOf(msgArr[i]) + alph.indexOf(keyArr[keyInd % keyArr.length])) % 26]);
+        keyInd++;
+      }
+      else msgOut.push(msgArr[i])
+    }
+    return this.isDirect ? msgOut.join('') : msgOut.reverse().join('');
+  }
+  decrypt(message, key) {
+    //throw new NotImplementedError('Not implemented');
+    // remove line with error and write your code here
+    if ((typeof arguments[0] !== 'string') || (typeof arguments[1] !== 'string')) throw new Error("Incorrect arguments!");
+    const alph = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    let msgArr = message.toUpperCase().split('');
+    let keyArr = key.toUpperCase().split('');
+    let msgOut = [];
+    let keyInd = 0;
+    for (let i = 0; i < msgArr.length; i++) {
+      if (alph.indexOf(msgArr[i]) >= 0) {
+        msgOut.push(alph[(26 + alph.indexOf(msgArr[i]) - alph.indexOf(keyArr[keyInd % keyArr.length])) % 26]);
+        keyInd++;
+      }
+      else msgOut.push(msgArr[i])
+    }
+    return this.isDirect ? msgOut.join('') : msgOut.reverse().join('');
   }
 }
 
